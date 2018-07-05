@@ -5,14 +5,25 @@
     open Microsoft.Quantum.Extensions.Testing;
     open Addition;
 
-    operation AssertEq (expected: Int, actual: Qubit[]) : ()
+    operation AssertEq (expected: Int, actual: Qubit[], message: String) : ()
     {
         body
         {
             for(i in 0..3)
             {
-                AssertQubit(ToResult(expected &&& 2^i), actual[i]);
+                Assert([PauliZ], [actual[i]], ToResult(expected &&& 2^i), $"{message} [{i}]");
             }
+        }
+    }
+
+    operation SetAndTest(a: Int, qa: Qubit[], b: Int, qb: Qubit[]) : ()
+    {
+        body
+        {
+            SetInt(a, qa);
+            SetInt(b, qb);
+            Add(qa, qb);
+            AssertEq(a + b, qb, $"{a}+{b}={a+b}");
         }
     }
 
@@ -23,10 +34,11 @@
             using (a = Qubit[4]) {
             using (b = Qubit[4])
             {
-                Add(a, b);
-
-                AssertAllZero(b); // Here to test my test framework, mainly
-                AssertEq(0, b);
+                SetAndTest(3,  a, 5, b);
+                SetAndTest(1,  a, 14, b);
+                SetAndTest(7,  a, 7,  b);
+                SetAndTest(15, a, 0,  b);
+                SetAndTest(0,  a, 0,  b);
             }}
         }
     }

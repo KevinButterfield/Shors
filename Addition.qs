@@ -5,7 +5,7 @@
 
     function ToResult (bit: Int) : (Result)
     {
-        if 1 == bit { return One; } else { return Zero; }
+        if 0 != bit { return One; } else { return Zero; }
     }
 
     operation Set (desired: Result, result: Qubit) : ()
