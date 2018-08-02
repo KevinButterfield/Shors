@@ -20,6 +20,17 @@
         }
     }
 
+    operation Clear (register: Qubit[]) : ()
+    {
+        body
+        {
+            for(i in 0..Length(register)-1)
+            {
+                Set(Zero, register[i]);
+            }
+        }
+    }
+
     operation SetInt(desired: Int, results: Qubit[]) : ()
     {
         body

@@ -43,16 +43,29 @@
         }
     }
 
-    operation AllocateQubitTest () : ()
+    operation DisjointUncertaintyTest () : ()
     {
         body
         {
-            using (qs = Qubit[1])
+            using (a = Qubit[4]) {
+            using (b = Qubit[4])
             {
-                Assert([PauliZ], qs, Zero, "Newly allocated qubit must be in |0> state");
-            }
-            
-            Message("Test passed");
+                Set(One, a[3]); // a = 1000
+                Set(One, b[0]); // b = 0001
+
+                H(a[1]); // a = 10?0
+                H(b[2]); // b = 0?01
+
+                Add(a, b); // b = 1??1
+
+                Assert([PauliZ], [b[0]], One, "b[0] != 1");
+                AssertProb([PauliZ], [b[1]], One, 0.5, "b[1] not 50/50", 1e-5);
+                AssertProb([PauliZ], [b[2]], One, 0.5, "b[2] not 50/50", 1e-5);
+                Assert([PauliZ], [b[3]], One, "b[3] != 1");
+
+                Clear(a);
+                Clear(b);
+            }}
         }
     }
 }
