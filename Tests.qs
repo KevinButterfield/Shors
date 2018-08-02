@@ -68,4 +68,54 @@
             }}
         }
     }
+
+    operation SingleJointUncertaintyInIsolationTest () : ()
+    {
+        body
+        {
+            using (a = Qubit[4]) {
+            using (b = Qubit[4])
+            {
+                H(a[0]); // a = 000?
+                H(b[0]); // b = 000?
+
+                Add(a, b);
+
+                AssertProb([PauliZ], [b[0]], One, 0.5, "b[0]", 1e-5);
+                AssertProb([PauliZ], [b[1]], One, 0.25, "b[1]", 1e-5);
+                Assert([PauliZ], [b[2]], Zero, "b[2]");
+                Assert([PauliZ], [b[3]], Zero, "b[3]");
+
+                Clear(a);
+                Clear(b);
+            }}
+        }
+    }
+
+    operation SingleJointUncertaintyWithOnesTest () : ()
+    {
+        body
+        {
+            using (a = Qubit[4]) {
+            using (b = Qubit[4])
+            {
+                Set(One, a[2]);
+                Set(One, a[1]);
+                Set(One, b[2]);
+
+                H(a[0]); // a = 011?
+                H(b[0]); // b = 010?
+
+                Add(a, b);
+
+                AssertProb([PauliZ], [b[0]], One, 0.5, "b[0]", 1e-5);
+                AssertProb([PauliZ], [b[1]], One, 0.75, "b[1]", 1e-5);
+                AssertProb([PauliZ], [b[2]], One, 0.25, "b[2]", 1e-5);
+                Assert([PauliZ], [b[3]], One, "b[3]");
+
+                Clear(a);
+                Clear(b);
+            }}
+        }
+    }
 }
