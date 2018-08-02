@@ -118,4 +118,37 @@
             }}
         }
     }
+
+    operation MultipleJointUncertaintyTest () : ()
+    {
+        body
+        {
+            using (a = Qubit[4]) {
+            using (b = Qubit[4]) {
+            using (c = Qubit[1])
+            {
+                H(a[2]);
+                H(a[1]);
+                Set(One, a[0]);
+                // a = 0??1
+
+                H(b[3]);
+                H(b[1]);
+                H(b[0]);
+                // b = ?0??
+
+                AddWithOverflow(a, b, c[0]);
+
+                AssertProb([PauliZ], [b[0]], One, 0.5, "b[0]", 1e-5);
+                AssertProb([PauliZ], [b[1]], One, 0.5, "b[1]", 1e-5);
+                AssertProb([PauliZ], [b[2]], One, 0.5, "b[2]", 1e-5);
+                AssertProb([PauliZ], [b[3]], One, 0.5, "b[3]", 1e-5);
+                AssertProb([PauliZ], [c[0]], One, 0.125, "c[0]", 1e-5);
+
+                Clear(a);
+                Clear(b);
+                Clear(c);
+            }}}
+        }
+    }
 }
