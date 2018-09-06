@@ -22,6 +22,7 @@
             CNOT(bottom, top);
             CNOT(bottom, middle);
         }
+    }
 
     // UnMajority and Add
     operation UMA (top: Qubit, middle: Qubit, bottom: Qubit) : ()
@@ -119,6 +120,7 @@
         }
     }
 
+    // b becomes b - a
     operation Subtract (a: Qubit[], b: Qubit[]) : ()
     {
         body

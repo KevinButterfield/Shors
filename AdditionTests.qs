@@ -70,6 +70,33 @@
         }
     }
 
+    operation BasicSubtractionTest () : ()
+    {
+        body
+        {
+            using (a = Qubit[4]) {
+            using (b = Qubit[4])
+            {
+                Set(One, b[3]);
+                Set(One, b[2]);
+                Set(One, b[1]);
+                Set(One, b[0]);
+                // b = 1111
+
+                Set(One, a[2]);
+                Set(One, a[0]);
+                // a = 0101
+
+                Subtract(a, b);
+
+                AssertEq(10, b, "");
+
+                Clear(a);
+                Clear(b);
+            }}
+        }
+    }
+
     operation SingleJointUncertaintyInIsolationTest () : ()
     {
         body
