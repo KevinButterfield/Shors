@@ -16,9 +16,9 @@ namespace TestAdd
 
         /// <summary>
         /// This driver will run all Q# tests (operations named "...Test") 
-        /// that belong to namespace TestAdd.
+        /// that belong to namespace Tests.
         /// </summary>
-        [OperationDriver(TestNamespace = "TestAdd")]
+        [OperationDriver(TestNamespace = "Tests")]
         public void TestTarget(TestOperation op)
         {
             using (var sim = new QuantumSimulator())

@@ -1,8 +1,9 @@
-﻿namespace TestAdd
+﻿namespace Tests
 {
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Primitive;
     open Microsoft.Quantum.Extensions.Testing;
+    open Utilities;
     open Addition;
 
     operation AssertEq (expected: Int, actual: Qubit[], message: String) : ()
