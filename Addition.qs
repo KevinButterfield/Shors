@@ -14,6 +14,14 @@
             CCNOT(top, middle, bottom);
         }
     }
+    operation MAJrev (top: Qubit, middle: Qubit, bottom: Qubit) : ()
+    {
+        body
+        {
+            CCNOT(top, middle, bottom);
+            CNOT(bottom, top);
+            CNOT(bottom, middle);
+        }
 
     // UnMajority and Add
     operation UMA (top: Qubit, middle: Qubit, bottom: Qubit) : ()
@@ -23,6 +31,16 @@
             CCNOT(top, middle, bottom);
             CNOT(bottom, top);
             CNOT(top, middle);
+        }
+    }
+    
+    operation UMArev (top: Qubit, middle: Qubit, bottom: Qubit) : ()
+    {
+        body
+        {
+            CNOT(top, middle);
+            CNOT(bottom, top);
+            CCNOT(top, middle, bottom);
         }
     }
 
@@ -57,6 +75,37 @@
             }
         }
     }
+    
+    operation SubtractWithUnderflow (a: Qubit[], b: Qubit[], underflow: Qubit) : ()
+    {
+        body
+        {
+            using (c = Qubit[1])
+            {
+                Set(Zero, c[0]);
+                Set(Zero, underflow);
+                let registerWidth = Length(a)-1;
+
+                UMArev(c[0], b[0], a[0]);
+                
+                for(i in 1..registerWidth)
+                {
+                    UMArev(a[i-1], b[i], a[i]);
+                }
+
+                CNOT(a[3], underflow);
+
+                for(i in registerWidth..-1..1)
+                {
+                    MAJrev(a[i-1], b[i], a[i]);
+                }
+
+                MAJrev(c[0], b[0], a[0]);
+
+                // c should deterministically be Zero
+            }
+        }
+    }
 
     operation Add (a: Qubit[], b: Qubit[]) : ()
     {
@@ -66,6 +115,18 @@
             {
                 AddWithOverflow(a, b, overflow[0]);
                 Set(Zero, overflow[0]);
+            }
+        }
+    }
+
+    operation Subtract (a: Qubit[], b: Qubit[]) : ()
+    {
+        body
+        {
+            using (underflow = Qubit[1])
+            {
+                SubtractWithUnderflow(a, b, underflow[0]);
+                Set(Zero, underflow[0]);
             }
         }
     }
