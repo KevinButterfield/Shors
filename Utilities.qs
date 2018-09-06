@@ -71,9 +71,13 @@ namespace Utilities
 
     operation Unquantify(register: Qubit[]) : (Int)
     {body{
-        return AddIfOne(register[0], 1)
-             + AddIfOne(register[1], 2)
-             + AddIfOne(register[2], 4)
-             + AddIfOne(register[3], 8);
+        mutable sum = 0;
+
+        for(i in 0..Length(register)-1)
+        {
+            set sum = AddIfOne(register[i], 2^i);
+        }
+        
+        return sum;
     }}
 }
