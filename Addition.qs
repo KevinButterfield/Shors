@@ -35,17 +35,22 @@
             {
                 Set(Zero, c[0]);
                 Set(Zero, overflow);
+                let registerWidth = Length(a)-1;
 
                 MAJ(c[0], b[0], a[0]);
-                MAJ(a[0], b[1], a[1]);
-                MAJ(a[1], b[2], a[2]);
-                MAJ(a[2], b[3], a[3]);
+
+                for(i in 1..registerWidth)
+                {
+                    MAJ(a[i-1], b[i], a[i]);
+                }
 
                 CNOT(a[3], overflow);
+                
+                for(i in registerWidth..-1..1)
+                {
+                    UMA(a[i-1], b[i], a[i]);
+                }
 
-                UMA(a[2], b[3], a[3]);
-                UMA(a[1], b[2], a[2]);
-                UMA(a[0], b[1], a[1]);
                 UMA(c[0], b[0], a[0]);
 
                 // c should deterministically be Zero
