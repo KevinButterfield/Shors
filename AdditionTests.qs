@@ -152,4 +152,39 @@
             }}}
         }
     }
+
+    operation MoreThanFourBitsTest () : ()
+    {
+        body
+        {
+            using (a = Qubit[6]) {
+            using (b = Qubit[6]) {
+            using (c = Qubit[1])
+            {
+                Set(One, a[5]);
+                Set(One, a[3]);
+                Set(One, a[1]);
+                // a = 101010
+
+                Set(One, b[4]);
+                Set(One, b[2]);
+                Set(One, b[0]);
+                // b = 010101
+
+                AddWithOverflow(a, b, c[0]);
+
+                Assert([PauliZ], [b[0]], One, "b[0]");
+                Assert([PauliZ], [b[1]], One, "b[1]");
+                Assert([PauliZ], [b[2]], One, "b[2]");
+                Assert([PauliZ], [b[3]], One, "b[3]");
+                Assert([PauliZ], [b[4]], One, "b[4]");
+                Assert([PauliZ], [b[5]], One, "b[5]");
+                Assert([PauliZ], [c[0]], Zero, "c[0]");
+
+                Clear(a);
+                Clear(b);
+                Clear(c);
+            }}}
+        }
+    }
 }
