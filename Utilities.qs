@@ -2,7 +2,7 @@ namespace Utilities
 {
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Primitive;
-    
+
     function ToResult (bit: Int) : (Result)
     {
         if 0 != bit { return One; } else { return Zero; }
@@ -55,7 +55,7 @@ namespace Utilities
     {
         body
         {
-            for(i in 0..3) { QuantifySingle(classical, register[i], 2^i); }
+            for(i in 0..Length(register)-1) { QuantifySingle(classical, register[i], 2^i); }
         }
     }
 
