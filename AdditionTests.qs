@@ -97,6 +97,32 @@
         }
     }
 
+    operation SubtractionWithUnderflowTest () : ()
+    {
+        body
+        {
+            using (a = Qubit[4]) {
+            using (b = Qubit[4]) {
+            using (u = Qubit[4])
+            {
+                Set(One, b[2]);
+                Set(One, b[0]);
+                // b = 0101
+                
+                Set(One, a[3]);
+                // a = 1000
+
+                SubtractWithUnderflow(a, b, u[0]);
+
+                Assert([PauliZ], [u[0]], One, "u");
+                
+                Clear(a);
+                Clear(b);
+                Clear(u);
+            }}}
+        }
+    }
+
     operation SingleJointUncertaintyInIsolationTest () : ()
     {
         body

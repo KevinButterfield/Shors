@@ -9,7 +9,8 @@ namespace AdditionModulo
     {body{
         using(t = Qubit[1])
         {
-            AddWithOverflow(a, b, t[0]);
+            Add(a, b);
+            SubtractWithUnderflow(N, b, t[0]);
         }
     }}
 }
