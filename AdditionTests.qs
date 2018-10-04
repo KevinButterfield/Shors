@@ -147,6 +147,33 @@
         }
     }
 
+    operation MiddleNonHalfTest () : ()
+    {
+        body
+        {
+            using (a = Qubit[4]) {
+            using (b = Qubit[4])
+            {
+                H(a[2]);
+                H(a[0]);
+                // a = 0?0?
+
+                Set(One, b[1]);
+                H(b[0]);
+                // b = 001?
+
+                Add(a, b);
+
+                AssertProb([PauliZ], [b[0]], One, 0.5, "b[0]", 1e-5);
+                AssertProb([PauliZ], [b[1]], One, 0.75, "b[1]", 1e-5);
+                AssertProb([PauliZ], [b[2]], One, 0.5, "b[2]", 1e-5);
+
+                Clear(a);
+                Clear(b);
+            }}
+        }
+    }
+
     operation MultipleJointUncertaintyTest () : ()
     {
         body

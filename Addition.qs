@@ -63,7 +63,7 @@
                     MAJ(a[i-1], b[i], a[i]);
                 }
 
-                CNOT(a[3], overflow);
+                CNOT(a[registerWidth], overflow);
                 
                 for(i in registerWidth..-1..1)
                 {
@@ -94,7 +94,7 @@
                     UMArev(a[i-1], b[i], a[i]);
                 }
 
-                CNOT(a[3], underflow);
+                CNOT(a[registerWidth], underflow);
 
                 for(i in registerWidth..-1..1)
                 {

@@ -12,8 +12,7 @@ namespace Utilities
     {
         body
         {
-            let current = M(result);
-            if desired != current
+            if desired != M(result)
             {
                 X(result);
             }
