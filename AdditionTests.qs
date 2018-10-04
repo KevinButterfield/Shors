@@ -70,7 +70,7 @@
         }
     }
 
-    operation BasicSubtractionTest () : ()
+    operation BasicDeterministicSubtractionTest () : ()
     {
         body
         {
@@ -97,7 +97,63 @@
         }
     }
 
-    operation SubtractionWithUnderflowTest () : ()
+    operation BasicUncertainSubtractionTest () : ()
+    {
+        body
+        {
+            using (a = Qubit[4]) {
+            using (b = Qubit[4])
+            {
+                Set(One, a[3]);
+                // a = 1000
+
+                Set(One, b[3]);
+                H(b[1]);
+                H(b[0]);
+                // b = 10??
+                
+                Subtract(a, b);
+
+                AssertProb([PauliZ], [b[0]], One, 0.5, "b[0]", 1e-5);
+                AssertProb([PauliZ], [b[1]], One, 0.5, "b[1]", 1e-5);
+                Assert([PauliZ], [b[2]], Zero, "b[2]");
+                Assert([PauliZ], [b[3]], Zero, "b[3]");
+
+                Clear(a);
+                Clear(b);
+            }}
+        }
+    }
+
+    operation ComplexUncertainSubtractionTest () : ()
+    {
+        body
+        {
+            using (a = Qubit[4]) {
+            using (b = Qubit[4])
+            {
+                H(a[2]);
+                H(a[1]);
+                // a = 0??0
+
+                Set(One, b[3]);
+                H(b[1]);
+                // b = 10?0
+                
+                Subtract(a, b);
+
+                Assert([PauliZ], [b[0]], Zero, "b[0]");
+                AssertProb([PauliZ], [b[1]], One, 0.5, "b[1]", 1e-5);
+                AssertProb([PauliZ], [b[2]], One, 0.5, "b[2]", 1e-5);
+                AssertProb([PauliZ], [b[3]], One, 0.375, "b[3]", 1e-5);
+
+                Clear(a);
+                Clear(b);
+            }}
+        }
+    }
+
+    operation UnderflowIndicatesSubtractionWentNegativeTest () : ()
     {
         body
         {

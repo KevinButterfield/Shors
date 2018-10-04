@@ -6,7 +6,7 @@ namespace DisabledTests
     open Utilities;
     open AdditionModulo;
 
-    operation DeterministicModularAdditionTest () : ()
+    operation DeterministicModularAdditionWithSmallNTest () : ()
     {
         body
         {
@@ -32,6 +32,33 @@ namespace DisabledTests
             }}}
         }
     }
+    
+    operation DeterministicModularAdditionWithLargeNTest () : ()
+    {
+        body
+        {
+            using (a = Qubit[4]) {
+            using (b = Qubit[4]) {
+            using (N = Qubit[4])
+            {
+                SetInt(6, a);
+                SetInt(4, b);
+                SetInt(12, N);
+
+                // 6 + 4 mod 12 = 10
+                AddMod(a, b, N);
+                
+                Assert([PauliZ], [b[0]], Zero, "b[0]");
+                Assert([PauliZ], [b[1]], One, "b[1]");
+                Assert([PauliZ], [b[2]], Zero, "b[2]");
+                Assert([PauliZ], [b[3]], One, "b[3]");
+
+                Clear(a);
+                Clear(b);
+                Clear(N);
+            }}}
+        }
+    }
 
     operation ModularDisjointUncertaintyWithSmallNTest () : ()
     {
@@ -43,13 +70,15 @@ namespace DisabledTests
             {
                 SetInt(6, N);
 
-                Set(One, a[3]); // a = 1000
-                Set(One, b[0]); // b = 0001
+                Set(One, a[3]);
+                H(a[1]);
+                // a = 10?0
 
-                H(a[1]); // a = 10?0
-                H(b[2]); // b = 0?01
+                H(b[2]);
+                Set(One, b[0]);
+                // b = 0?01
 
-                AddMod(a, b, N); // b = 1??1
+                AddMod(a, b, N); // b = 1??1 mod 6
 
                 AssertProb([PauliZ], [b[0]], One, 0.5, "b[0]", 1e-5);
                 AssertProb([PauliZ], [b[1]], One, 0.5, "b[1]", 1e-5);
@@ -94,7 +123,7 @@ namespace DisabledTests
         }
     }
 
-    operation ModularMultipleJointUncertaintyTest () : ()
+    operation ModularMultipleJointUncertaintyWithLargeNTest () : ()
     {
         body
         {
