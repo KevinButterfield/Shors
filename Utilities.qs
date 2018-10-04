@@ -35,7 +35,10 @@ namespace Utilities
     {
         body
         {
-            for(i in 0..3) { Set(ToResult(desired &&& 2^i), results[i]); }
+            for(i in 0..Length(results)-1)
+            {
+                Set(ToResult(desired &&& 2^i), results[i]); 
+            }
         }
     }
 
