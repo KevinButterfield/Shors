@@ -108,6 +108,7 @@
         }
     }
 
+    // b becomes b + a
     operation Add (a: Qubit[], b: Qubit[]) : ()
     {
         body
