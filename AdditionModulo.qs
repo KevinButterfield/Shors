@@ -5,12 +5,12 @@ namespace AdditionModulo
     open Utilities;
     open Addition;
 
-    operation AddMod(a: Qubit[], b: Qubit[], N: Qubit[]) : ()
-    {body{
+    operation AddMod(a: Qubit[], b: Qubit[], N: Qubit[]) : Unit
+    {
         using(t = Qubit[1])
         {
             Add(a, b);
             SubtractWithUnderflow(N, b, t[0]);
         }
-    }}
+    }
 }

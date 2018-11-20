@@ -5,45 +5,36 @@ namespace Utilities
 
     function ToResult (bit: Int) : (Result)
     {
-        if 0 != bit { return One; } else { return Zero; }
+        if(0 != bit) { return One; } else { return Zero; }
     }
 
-    operation Set (desired: Result, result: Qubit) : ()
+    operation Set (desired: Result, result: Qubit) : Unit
     {
-        body
+        if(desired != M(result))
         {
-            if desired != M(result)
-            {
-                X(result);
-            }
+            X(result);
         }
     }
 
-    operation Clear (register: Qubit[]) : ()
+    operation Clear (register: Qubit[]) : Unit
     {
-        body
+        for(i in 0..Length(register)-1)
         {
-            for(i in 0..Length(register)-1)
-            {
-                Set(Zero, register[i]);
-            }
+            Set(Zero, register[i]);
         }
     }
 
-    operation SetInt(desired: Int, results: Qubit[]) : ()
+    operation SetInt(desired: Int, results: Qubit[]) : Unit
     {
-        body
+        for(i in 0..Length(results)-1)
         {
-            for(i in 0..Length(results)-1)
-            {
-                Set(ToResult(desired &&& 2^i), results[i]); 
-            }
+            Set(ToResult(desired &&& 2^i), results[i]); 
         }
     }
 
-    operation QuantifySingle(classical: Int, quantum: Qubit, mask: Int) : ()
-    {body{
-        if 0 == (classical &&& mask)
+    operation QuantifySingle(classical: Int, quantum: Qubit, mask: Int) : Unit
+    {
+        if(0 == (classical &&& mask))
         {
             Set(Zero, quantum);
         }
@@ -51,28 +42,25 @@ namespace Utilities
         {
             Set(One, quantum);
         }
-    }}
+    }
 
-    operation Quantify(classical: Int, register: Qubit[]) : ()
+    operation Quantify(classical: Int, register: Qubit[]) : Unit
     {
-        body
-        {
-            for(i in 0..Length(register)-1) { QuantifySingle(classical, register[i], 2^i); }
-        }
+        for(i in 0..Length(register)-1) { QuantifySingle(classical, register[i], 2^i); }
     }
 
     operation AddIfOne(q: Qubit, addendum: Int) : (Int)
-    {body{
+    {
         mutable output = 0;
         if (One == M(q))
         {
             set output = addendum;
         }
         return output;
-    }}
+    }
 
     operation Unquantify(register: Qubit[]) : (Int)
-    {body{
+    {
         mutable sum = 0;
 
         for(i in 0..Length(register)-1)
@@ -81,5 +69,5 @@ namespace Utilities
         }
         
         return sum;
-    }}
+    }
 }
