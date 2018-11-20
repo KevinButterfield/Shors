@@ -1,4 +1,4 @@
-﻿namespace Addition
+namespace Addition
 {
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Primitive;

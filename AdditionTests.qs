@@ -1,4 +1,4 @@
-﻿namespace Tests
+namespace Tests
 {
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Primitive;
